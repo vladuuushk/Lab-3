@@ -1,0 +1,15 @@
+handler/ExportHandler.class
+model/Bestiarum.class
+view/MonsterInfoDialog.class
+handler/UnsupportedFormatException.class
+handler/XmlExportHandler.class
+model/Monster$Recipe.class
+handler/YamlExportHandler.class
+model/Monster.class
+view/MonsterInfoDialog$1.class
+handler/JsonImportHandler.class
+handler/ImportHandler.class
+view/MainWindow.class
+handler/XmlImportHandler.class
+handler/JsonExportHandler.class
+handler/YamlImportHandler.class
