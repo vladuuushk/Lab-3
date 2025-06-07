@@ -23,24 +23,26 @@ public class XmlImportHandler implements ImportHandler{
         this.nextHandler = nextHandler;
     }
 
-   @Override
-public List<Monster> handleImportFile(String filePath) throws UnsupportedFormatException {
-    if (filePath.toLowerCase().endsWith(".xml")) {
-        try (FileInputStream inputStream = new FileInputStream(filePath)) {
-            XmlMapper xmlMapper = new XmlMapper();
-            Bestiarum bestiarum = xmlMapper.readValue(inputStream, Bestiarum.class);
-            List<Monster> monsters = bestiarum.getMonsters();
-            for (Monster m : monsters) {
-                m.setSource(filePath);
-            }
-            return monsters;
+    @Override
+    public List<Monster> handleImportFile(String filePath) throws UnsupportedFormatException{
+      if (filePath.toLowerCase().endsWith(".xml")){
+        try {
+            JAXBContext context = JAXBContext.newInstance(Bestiarum.class);
+                Unmarshaller unmarshaller = context.createUnmarshaller();
+                Bestiarum bestiarum = (Bestiarum) unmarshaller.unmarshal(new File(filePath));
+                List<Monster> monsters = bestiarum.getMonsters();
+                for (Monster m : monsters) {
+                    m.setSource(filePath);
+                }
+                return monsters;  
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
-    } else if (nextHandler != null) {
-        return nextHandler.handleImportFile(filePath);
+      }  
+      else if (nextHandler != null) {
+            return nextHandler.handleImportFile(filePath);
+        }
+        throw new UnsupportedFormatException("Формат файла не поддерживается: " + filePath);
     }
-    throw new UnsupportedFormatException("Формат файла не поддерживается: " + filePath);
-}
 }
